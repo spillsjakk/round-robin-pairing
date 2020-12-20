@@ -4,22 +4,30 @@ use rand::thread_rng;
 use round_robin::RoundRobin;
 use user::User;
 
-mod round_robin;
 mod game;
+mod round_robin;
 mod user;
 
-pub fn generate(user_names: Vec<String>) -> (Vec<User>, Vec<Vec<Game>>) {
-  let mut rng = thread_rng();
-  let mut local_user_names = user_names.clone();
-  local_user_names.shuffle(&mut rng);
+pub fn generate(user_names: Vec<String>) -> Option<(Vec<User>, Vec<Vec<Game>>)> {
+  if user_names.len() < 2 {
+    None
+  } else {
+    let mut rng = thread_rng();
+    let mut local_user_names = user_names.clone();
+    local_user_names.shuffle(&mut rng);
 
-  let users = User::from_names(local_user_names);
+    let mut users = User::from_names(local_user_names);
 
-  let mut round_robin = RoundRobin::new(users.clone());
+    if users.len()&1 != 0 {
+      users.push(User::new(0, "bye"));
+    }
 
-  let pairings = round_robin.generate_pairings();
+    let mut round_robin = RoundRobin::new(users.clone());
 
-  (users, pairings)
+    let pairings = round_robin.generate_pairings();
+
+    Some((users, pairings))
+  }
 }
 
 pub fn format_pairings(raw_pairings: Vec<Vec<Game>>) -> Vec<Vec<(usize, usize)>> {
