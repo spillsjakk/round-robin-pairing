@@ -1,5 +1,5 @@
 [package]
-name = "round-robin-pairing"
+name = "round_robin_pairing"
 version = "0.1.0"
 authors = ["Mehmet Sefa Balık <mehmetsefa2644@gmail.com>"]
 edition = "2018"
