@@ -43,3 +43,17 @@ pub fn format_pairings(raw_pairings: Vec<Vec<Game>>) -> Vec<Vec<(usize, usize)>>
 
   pairings
 }
+
+pub fn format_pairings_by_username(raw_pairings: Vec<Vec<Game>>) -> Vec<Vec<(String, String)>> {
+  let mut pairings: Vec<Vec<(String, String)>> = vec![];
+
+  for (_, rounds) in raw_pairings.iter().enumerate() {
+    let mut round: Vec<(String, String)> = vec![];
+    for (_, game) in rounds.iter().enumerate() {
+      round.push((game.white.name.clone(), game.black.name.clone()));
+    }
+    pairings.push(round);
+  }
+
+  pairings
+}
